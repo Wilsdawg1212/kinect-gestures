@@ -3,6 +3,7 @@ import numpy as np
 import cv2
 
 from src.segment import get_background_room, get_foreground_mask
+from src.capture import get_depth
 
 def normalize_for_display(img: np.ndarray) -> np.ndarray:
     """Normalize a depth-like array into an 8-bit image for cv2.imshow."""
@@ -25,7 +26,7 @@ def main():
 
     while True:
         # Grab current depth frame from Kinect
-        depth, _ = freenect.sync_get_depth()
+        depth = get_depth()
         if depth is None:
             continue
 
@@ -55,6 +56,11 @@ def main():
             print("Capturing background...")
             background = get_background_room()
             print("Background captured.")
+
+        # if key == ord("d"):
+        #     print("current depth vs background at 300, 250:")
+        #     print(f"{depth[300, 250]}, {background[300, 250]}")
+        #     print(f"{depth[140, 372]}, {background[140, 372]}")
 
         if key == ord("q") or key == 27:
             break
